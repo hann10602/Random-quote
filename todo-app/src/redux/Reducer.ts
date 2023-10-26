@@ -7,24 +7,26 @@ const initialState = {
   todoList: todoInitial,
 };
 
-export const addTodo = createAction<TodoType>("todo/add");
+export const addTodo = createAction<string>("todo/add");
 
-export const updateTodo = createAction<TodoType>("todo/update");
+export const updateTodo = createAction<string>("todo/update");
 
-export const deleteTodo = createAction<number>("todo/delete");
+export const deleteTodo = createAction<string>("todo/delete");
 
-export const deleteAllTodo = createAction<null>("todo/deleteAll");
+export const deleteAllTodo = createAction("todo/deleteAll");
+
+export const toggleAllTodo = createAction("todo/toggleAll");
 
 export const todoReducer = createReducer(initialState, (builder) => {
   builder
     .addCase(addTodo, (state, action) => {
-        const newId = v4();
+      const newId = v4();
 
-        const newTodo:TodoType = {
-            id: newId,
-            title: action.payload,
-            isCompleted: false,
-        }
+      const newTodo: TodoType = {
+        id: newId,
+        title: action.payload,
+        isCompleted: false,
+      };
 
       state.todoList.push(newTodo);
     })
@@ -44,5 +46,21 @@ export const todoReducer = createReducer(initialState, (builder) => {
     })
     .addCase(deleteAllTodo, (state) => {
       state.todoList = [];
+    })
+    .addCase(toggleAllTodo, (state) => {
+      const isAllCompleted =
+        state.todoList.filter((item) => item.isCompleted === true).length ===
+        state.todoList.length;
+      if (isAllCompleted) {
+        state.todoList.forEach((item) => {
+          item.isCompleted = false;
+        });
+      } else {
+        state.todoList.forEach((item) => {
+          if (item.isCompleted === false) {
+            item.isCompleted = true;
+          }
+        });
+      }
     });
 });

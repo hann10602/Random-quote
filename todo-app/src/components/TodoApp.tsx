@@ -1,10 +1,9 @@
-import React from "react";
-import Page from "./Page";
 import { Link, useLocation } from "react-router-dom";
 import TodoInput from "./input";
 import TodoList from "./todo-list";
 import { RootState } from "../store";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteAllTodo } from "../redux/Reducer";
 
 type PagesType = {
   id: number;
@@ -32,12 +31,17 @@ const Pages: PagesType[] = [
 
 const TodoApp = () => {
   const location = useLocation();
+  const dispatch = useDispatch();
 
   const completedQuantity = useSelector((state: RootState) =>
     state.todoList.reduce(
       (s, item) => (item.isCompleted === true ? s + 1 : s),
       0
     )
+  );
+
+  const isClearALl = useSelector((state: RootState) =>
+    state.todoList.filter(item => item.isCompleted != false) .length !== 0
   );
 
   return (
@@ -61,7 +65,15 @@ const TodoApp = () => {
             </Link>
           ))}
         </div>
-        <p className="hover:underline cursor-pointer">Clear completed</p>
+        {
+          isClearALl ? <p
+          className="w-104px hover:underline cursor-pointer"
+          onClick={() => dispatch(deleteAllTodo())}
+        >
+          Clear completed
+        </p> :
+        <div className="w-104px"></div>
+        }
       </div>
     </div>
   );

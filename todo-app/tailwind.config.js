@@ -12,7 +12,8 @@ export default {
   theme: {
     extend: {
       width: {
-        "520px": "520px"
+        "520px": "520px",
+        "104px": "104px"
       },
       spacing: {
 

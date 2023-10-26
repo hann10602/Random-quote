@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { TodoType } from "../../types/type";
 import CheckIcon from "../../assets/checkmark.svg";
 import DeleteIcon from "../../assets/close.svg";
